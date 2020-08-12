@@ -288,3 +288,11 @@ JSON_ENUM_MAPPER(::winrt::Windows::System::VirtualKey)
         pair_type{ "shift", ValueType::Shift },
     };
 };
+
+JSON_ENUM_MAPPER(::winrt::TerminalApp::TabSwitchDirection)
+{
+    JSON_MAPPINGS(2) = {
+        pair_type{ "nextTab", ValueType::NextTab },
+        pair_type{ "prevTab", ValueType::PrevTab },
+    };
+};

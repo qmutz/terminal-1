@@ -460,15 +460,14 @@ namespace winrt::TerminalApp::implementation
         if (const auto& realArgs = args.ActionArgs().try_as<TerminalApp::ToggleTabSwitcherArgs>())
         {
             auto anchorKey = realArgs.AnchorKey();
+            auto initialDirection = realArgs.InitialDirection();
 
             auto opt = _GetFocusedTabIndex();
             uint32_t startIdx = opt ? *opt : 0;
 
             if (anchorKey != VirtualKey::None)
             {
-                // TODO: GH#7178 - delta should also have the option of being -1, in the case when
-                // a user decides to open the tab switcher going to the prev tab.
-                int delta = 1;
+                int delta = initialDirection == TabSwitchDirection::NextTab ? 1 : -1;
                 startIdx = (startIdx + _tabs.Size() + delta) % _tabs.Size();
             }
 

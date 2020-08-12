@@ -45,6 +45,12 @@ namespace TerminalApp
         AllFiles
     };
 
+    enum TabSwitchDirection
+    {
+        NextTab = 0,
+        PrevTab
+    };
+
     [default_interface] runtimeclass NewTerminalArgs {
         NewTerminalArgs();
         String Commandline;
@@ -144,5 +150,6 @@ namespace TerminalApp
     [default_interface] runtimeclass ToggleTabSwitcherArgs : IActionArgs
     {
         Windows.System.VirtualKey AnchorKey { get; };
+        TabSwitchDirection InitialDirection { get; };
     };
 }
