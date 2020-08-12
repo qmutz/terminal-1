@@ -98,6 +98,13 @@
       ],
       "type": "string"
     },
+    "InitialDirection": {
+      "enum": [
+        "nextTab",
+        "prevTab"
+      ],
+      "type": "string"
+    }
     "NewTerminalArgs": {
       "properties": {
         "commandline": {
@@ -395,6 +402,11 @@
               "$ref": "#/definitions/AnchorKey",
               "default": null,
               "description": "If provided, the tab switcher will stay open as long as the anchor key is held down. The anchor key should be part of the keybinding that opens the switcher."
+            },
+            "initialDirection": {
+              "$ref":"#/definitions/InitialDirection",
+              "default": "nextTab",
+              "description": "Determines the tab to focus when opening anchored tab switcher. nextTab will open ATS with the next tab focused, prevTab will open ATS with the previous tab focused. The default is nextTab if omitted."
             }
           }
         }
