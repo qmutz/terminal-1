@@ -25,7 +25,7 @@ namespace winrt::TerminalApp::implementation
         void RunAsUwp();
         bool IsElevated() const noexcept;
         void LoadSettings();
-        [[nodiscard]] std::shared_ptr<::TerminalApp::CascadiaSettings> GetSettings() const noexcept;
+        [[nodiscard]] TerminalApp::CascadiaSettings GetSettings() const noexcept;
 
         int32_t SetStartupCommandline(array_view<const winrt::hstring> actions);
         winrt::hstring ParseCommandlineMessage();
@@ -68,7 +68,7 @@ namespace winrt::TerminalApp::implementation
         // updated in _ApplyTheme. The root currently is _root.
         winrt::com_ptr<TerminalPage> _root{ nullptr };
 
-        std::shared_ptr<::TerminalApp::CascadiaSettings> _settings{ nullptr };
+        winrt::com_ptr<CascadiaSettings> _settings{ nullptr };
 
         HRESULT _settingsLoadedResult;
         winrt::hstring _settingsLoadExceptionText{};
