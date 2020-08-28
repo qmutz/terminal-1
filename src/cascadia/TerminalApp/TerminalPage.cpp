@@ -6,7 +6,6 @@
 #include "ActionAndArgs.h"
 #include "Utils.h"
 #include "AppLogic.h"
-#include "Jumplist.h"
 #include "../../types/inc/utils.hpp"
 
 #include <LibraryResources.h>
@@ -251,8 +250,6 @@ namespace winrt::TerminalApp::implementation
                 page->CommandPalette().OnTabsChanged(s, e);
             }
         });
-
-        _jumplist.UpdateJumplist(_settings->GetProfiles());
 
         // Once the page is actually laid out on the screen, trigger all our
         // startup actions. Things like Panes need to know at least how big the
@@ -2002,8 +1999,6 @@ namespace winrt::TerminalApp::implementation
         // Re-wire the keybindings to their handlers, as we'll have created a
         // new AppKeyBindings object.
         _HookupKeyBindings(_settings->GetKeybindings());
-
-        _jumplist.UpdateJumplist(_settings->GetProfiles());
 
         // Refresh UI elements
         auto profiles = _settings->GetProfiles();

@@ -3,6 +3,7 @@
 
 #include "pch.h"
 #include "AppHost.h"
+#include "Jumplist.h"
 #include "../types/inc/Viewport.hpp"
 #include "../types/inc/utils.hpp"
 #include "../types/inc/User32Utils.hpp"
@@ -165,6 +166,7 @@ void AppHost::Initialize()
     _logic.FullscreenChanged({ this, &AppHost::_FullscreenChanged });
     _logic.FocusModeChanged({ this, &AppHost::_FocusModeChanged });
     _logic.AlwaysOnTopChanged({ this, &AppHost::_AlwaysOnTopChanged });
+    _logic.SettingsChanged({ this, &AppHost::_SettingsChanged });
 
     _logic.Create();
 
@@ -195,6 +197,13 @@ void AppHost::Initialize()
     // get cleaned up normally when our process exits.
     ::winrt::TerminalApp::App a{ _app };
     ::winrt::detach_abi(a);
+}
+
+void AppHost::_SettingsChanged(const winrt::Windows::Foundation::IInspectable&,
+                               const winrt::Windows::Foundation::IInspectable&)
+{
+    Jumplist jumplist;
+    jumplist.UpdateJumplist();
 }
 
 // Method Description:

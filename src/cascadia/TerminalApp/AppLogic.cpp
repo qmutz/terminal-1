@@ -644,6 +644,7 @@ namespace winrt::TerminalApp::implementation
             hr = wil::ResultFromCaughtException();
             LOG_HR(hr);
         }
+
         return hr;
     }
 
@@ -692,6 +693,8 @@ namespace winrt::TerminalApp::implementation
             TelemetryPrivacyDataTag(PDT_ProductAndServicePerformance));
 
         _loadedInitialSettings = true;
+
+        _settingsChangedHandlers(*this, nullptr);
 
         // Register for directory change notification.
         _RegisterSettingsChange();
@@ -1106,4 +1109,5 @@ namespace winrt::TerminalApp::implementation
     // Winrt events need a method for adding a callback to the event and removing the callback.
     // These macros will define them both for you.
     DEFINE_EVENT_WITH_TYPED_EVENT_HANDLER(AppLogic, RequestedThemeChanged, _requestedThemeChangedHandlers, winrt::Windows::Foundation::IInspectable, winrt::Windows::UI::Xaml::ElementTheme);
+    DEFINE_EVENT_WITH_TYPED_EVENT_HANDLER(AppLogic, SettingsChanged, _settingsChangedHandlers, winrt::Windows::Foundation::IInspectable, winrt::Windows::Foundation::IInspectable);
 }

@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Jumplist.h"
 
+#include <winrt/TerminalApp.h>
 #include <Propkey.h>
 
 using namespace TerminalApp;
@@ -22,7 +23,7 @@ DEFINE_PROPERTYKEY(PKEY_AppUserModel_DestListLogoUri, 0x9F4C2855, 0x9F79, 0x4B39
 // - profiles - The profiles to add to the jumplist
 // Return Value:
 // - <none>
-void Jumplist::UpdateJumplist(gsl::span<const Profile> profiles)
+void Jumplist::UpdateJumplist()
 {
     winrt::com_ptr<ICustomDestinationList> jumplistInstance;
     if (FAILED(CoCreateInstance(CLSID_DestinationList, nullptr, CLSCTX_ALL, IID_PPV_ARGS(&jumplistInstance))))

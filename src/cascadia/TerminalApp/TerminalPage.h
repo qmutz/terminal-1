@@ -7,7 +7,6 @@
 #include "Tab.h"
 #include "CascadiaSettings.h"
 #include "Profile.h"
-#include "Jumplist.h"
 
 #include <winrt/Microsoft.Terminal.TerminalControl.h>
 
@@ -86,8 +85,6 @@ namespace winrt::TerminalApp::implementation
         TerminalApp::TabRowControl _tabRow{ nullptr };
         Windows::UI::Xaml::Controls::Grid _tabContent{ nullptr };
         Microsoft::UI::Xaml::Controls::SplitButton _newTabButton{ nullptr };
-
-        Jumplist _jumplist{};
 
         std::shared_ptr<::TerminalApp::CascadiaSettings> _settings{ nullptr };
 
