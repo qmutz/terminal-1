@@ -695,6 +695,8 @@ namespace winrt::TerminalApp::implementation
 
         // Register for directory change notification.
         _RegisterSettingsChange();
+
+        _settingsChangedHandlers(*this, *_settings);
     }
 
     // Method Description:
