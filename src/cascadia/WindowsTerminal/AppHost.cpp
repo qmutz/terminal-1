@@ -7,6 +7,7 @@
 #include "../types/inc/utils.hpp"
 #include "../types/inc/User32Utils.hpp"
 #include "resource.h"
+#include "Jumplist.h"
 
 #include <winrt/Microsoft.Terminal.TerminalControl.h>
 
@@ -170,6 +171,7 @@ void AppHost::Initialize()
 
     _logic.TitleChanged({ this, &AppHost::AppTitleChanged });
     _logic.LastTabClosed({ this, &AppHost::LastTabClosed });
+    _logic.SettingsChanged({ this, &AppHost::_SettingsChanged });
 
     _window->UpdateTitle(_logic.Title());
 
@@ -425,4 +427,10 @@ void AppHost::_WindowMouseWheeled(const til::point coord, const int32_t delta)
             }
         }
     }
+}
+
+void AppHost::_SettingsChanged(const winrt::Windows::Foundation::IInspectable& /*sender*/, const winrt::TerminalApp::CascadiaSettings& arg)
+{
+    Jumplist jumplist;
+    jumplist.UpdateJumplist(arg);
 }

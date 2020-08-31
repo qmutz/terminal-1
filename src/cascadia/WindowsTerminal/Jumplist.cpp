@@ -4,7 +4,9 @@
 #include <winrt/TerminalApp.h>
 #include <Propkey.h>
 
+using namespace winrt;
 using namespace TerminalApp;
+using namespace winrt::Windows::Foundation::Collections;
 
 //  This propkey isn't defined in Propkey.h, but is used by UWP Jumplist to determine the icon of the jumplist item.
 //  We need this because our icon paths are 
@@ -23,9 +25,9 @@ DEFINE_PROPERTYKEY(PKEY_AppUserModel_DestListLogoUri, 0x9F4C2855, 0x9F79, 0x4B39
 // - profiles - The profiles to add to the jumplist
 // Return Value:
 // - <none>
-void Jumplist::UpdateJumplist()
+void Jumplist::UpdateJumplist(const CascadiaSettings& settings)
 {
-    winrt::com_ptr<ICustomDestinationList> jumplistInstance;
+    com_ptr<ICustomDestinationList> jumplistInstance;
     if (FAILED(CoCreateInstance(CLSID_DestinationList, nullptr, CLSCTX_ALL, IID_PPV_ARGS(&jumplistInstance))))
     {
         return;
@@ -33,7 +35,7 @@ void Jumplist::UpdateJumplist()
 
     // Start the Jumplist edit transaction
     uint32_t slots;
-    winrt::com_ptr<IObjectCollection> jumplistItems;
+    com_ptr<IObjectCollection> jumplistItems;
     if (FAILED(jumplistInstance->BeginList(&slots, IID_PPV_ARGS(&jumplistItems))))
     {
         return;
@@ -44,7 +46,7 @@ void Jumplist::UpdateJumplist()
     jumplistItems->Clear();
 
     // Update the list of profiles.
-    if (FAILED(_updateProfiles(jumplistItems, profiles)))
+    if (FAILED(_updateProfiles(jumplistItems, settings.Profiles())))
     {
         return;
     }
@@ -70,18 +72,18 @@ void Jumplist::UpdateJumplist()
 // - profiles - The profiles to add to the jumplist
 // Return Value:
 // - S_OK or HRESULT failure code.
-HRESULT Jumplist::_updateProfiles(winrt::com_ptr<IObjectCollection>& jumplistItems, Windows::Foundation::Collections::IVectorView<Profile> profiles)
+HRESULT Jumplist::_updateProfiles(com_ptr<IObjectCollection>& jumplistItems, IObservableVector<Profile> profiles)
 {
     HRESULT result = S_OK;
 
     for (const auto& profile : profiles)
     {
         // Craft the arguments following "wt.exe"
-        auto profileName = profile.GetName();
+        auto profileName = profile.Name();
         auto args = fmt::format(L"-p \"{}\"", profileName);
 
         // Create the shell link object for the profile
-        winrt::com_ptr<IShellLink> shLink;
+        com_ptr<IShellLink> shLink;
         auto result = _createShellLink(profileName, profile.GetExpandedIconPath(), args, shLink);
         if (FAILED(result))
         {
@@ -107,9 +109,9 @@ HRESULT Jumplist::_updateProfiles(winrt::com_ptr<IObjectCollection>& jumplistIte
 // Return Value:
 // - S_OK or HRESULT failure code.
 HRESULT Jumplist::_createShellLink(const std::wstring_view& name,
-                                  const std::wstring_view& path,
-                                  const std::wstring_view& args,
-                                  winrt::com_ptr<IShellLink>& shLink)
+                                   const std::wstring_view& path,
+                                   const std::wstring_view& args,
+                                   com_ptr<IShellLink>& shLink)
 {
     // Create a shell link object
     auto result = CoCreateInstance(CLSID_ShellLink, nullptr, CLSCTX_ALL, IID_PPV_ARGS(&shLink));
@@ -132,7 +134,7 @@ HRESULT Jumplist::_createShellLink(const std::wstring_view& name,
     iconProp.vt = VT_LPWSTR;
     iconProp.pwszVal = const_cast<wchar_t*>(path.data());
 
-    winrt::com_ptr<IPropertyStore> propStore = shLink.as<IPropertyStore>();
+    com_ptr<IPropertyStore> propStore = shLink.as<IPropertyStore>();
     propStore->SetValue(PKEY_Title, titleProp);
     propStore->SetValue(PKEY_AppUserModel_DestListLogoUri, iconProp);
 

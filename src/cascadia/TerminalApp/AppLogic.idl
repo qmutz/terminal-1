@@ -4,6 +4,7 @@
 import "TerminalPage.idl";
 import "ShortcutActionDispatch.idl";
 import "IDirectKeyListener.idl";
+import "CascadiaSettings.idl";
 
 namespace TerminalApp
 {
@@ -72,5 +73,6 @@ namespace TerminalApp
         event Windows.Foundation.TypedEventHandler<Object, Object> FocusModeChanged;
         event Windows.Foundation.TypedEventHandler<Object, Object> FullscreenChanged;
         event Windows.Foundation.TypedEventHandler<Object, Object> AlwaysOnTopChanged;
+        event Windows.Foundation.TypedEventHandler<Object, CascadiaSettings> SettingsChanged;
     }
 }

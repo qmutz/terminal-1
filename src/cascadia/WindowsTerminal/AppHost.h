@@ -39,4 +39,6 @@ private:
     void _AlwaysOnTopChanged(const winrt::Windows::Foundation::IInspectable& sender,
                              const winrt::Windows::Foundation::IInspectable& arg);
     void _WindowMouseWheeled(const til::point coord, const int32_t delta);
+    void _SettingsChanged(const winrt::Windows::Foundation::IInspectable& sender,
+                          const winrt::TerminalApp::CascadiaSettings& arg);
 };
