@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 #include "pch.h"
 #include "Jumplist.h"
 
@@ -22,7 +25,7 @@ DEFINE_PROPERTYKEY(PKEY_AppUserModel_DestListLogoUri, 0x9F4C2855, 0x9F79, 0x4B39
 // Method Description:
 // - Updates the items of the Jumplist based on the given settings.
 // Arguments:
-// - profiles - The profiles to add to the jumplist
+// - settings - The settings object to update the jumplist with.
 // Return Value:
 // - <none>
 void Jumplist::UpdateJumplist(const CascadiaSettings& settings)
@@ -41,8 +44,8 @@ void Jumplist::UpdateJumplist(const CascadiaSettings& settings)
         return;
     }
 
-    // TODO: Currently it's just easier to clear the list and re-add everything. The settings
-    // aren't updated _that_ often so it shouldn't have big impact. Can definitely revist if it does.
+    // TODO: It's just easier to clear the list and re-add everything. The settings aren't
+    // updated often, and there likely isn't a huge number of profiles to add.
     jumplistItems->Clear();
 
     // Update the list of profiles.
@@ -51,14 +54,13 @@ void Jumplist::UpdateJumplist(const CascadiaSettings& settings)
         return;
     }
 
-    // TODO: Consider adding the customized New Tab Dropdown items as well.
+    // TODO: Add items from the future customizable new tab dropdown as well.
 
-    // Add the items to the jumplist Task section
-    // The Tasks section is immutable by the user, unlike the destinations section
-    // that can have its items pinned and removed.
+    // Add the items to the jumplist Task section.
+    // The Tasks section is immutable by the user, unlike the destinations
+    // section that can have its items pinned and removed.
     jumplistInstance->AddUserTasks(jumplistItems.get());
 
-    // Commit the edits
     if (FAILED(jumplistInstance->CommitList()))
     {
         return;
@@ -90,7 +92,6 @@ HRESULT Jumplist::_updateProfiles(com_ptr<IObjectCollection>& jumplistItems, IOb
             return result;
         }
 
-        // Push the shell link obj into the jumplist items
         jumplistItems->AddObject(shLink.get());
     }
 
@@ -120,8 +121,8 @@ HRESULT Jumplist::_createShellLink(const std::wstring_view& name,
         return result;
     }
 
-    // Passing null gets us the wt.exe path
     wchar_t wtExe[MAX_PATH];
+    // Passing null gives us the path of the executable file of the current process.
     GetModuleFileName(NULL, wtExe, ARRAYSIZE(wtExe));
     shLink->SetPath(wtExe);
     shLink->SetArguments(args.data());

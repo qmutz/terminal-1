@@ -2,10 +2,12 @@
 // Licensed under the MIT license.
 //
 // Module Name:
-// -
+// - Jumplist.h
 //
 // Abstract:
-// -
+// - The Jumplist is the menu that pops up when right clicking a pinned
+// item in the taskbar. This class handles updating the Terminal's jumplist
+// using the Terminal's settings.
 //
 
 #pragma once
